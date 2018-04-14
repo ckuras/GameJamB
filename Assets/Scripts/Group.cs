@@ -26,7 +26,6 @@ public class Group : MonoBehaviour {
     }
 
 
-
     void updateGrid()
     {
         // Remove old children from grid
@@ -121,32 +120,28 @@ public class Group : MonoBehaviour {
 
                 foreach (Transform child in transform)
                 {
-                    while (MyGrid.insideBorder(child.position) && isValidGridPos())
+                    child.position += new Vector3(0, -1, 0);
+
+                    while (isValidGridPos())
                     {
+                        // It's valid. Update grid.
+                        updateGrid();
+
                         child.position += new Vector3(0, -1, 0);
-
-                        if (isValidGridPos())
-                        {
-                            // It's valid. Update grid.
-                            updateGrid();
-                        }
+                            
                     }
 
-
-                    {
-                        // It's not valid. revert.
-                        child.position += new Vector3(0, 1, 0);
-
-                        // Clear filled horizontal lines
-                        MyGrid.deleteFullRows();
-
-                        // Spawn next Group
-                        FindObjectOfType<Spawner>().spawnNext();
-
-                        // Disable script
-                        enabled = false;
-                    }
+                    child.position += new Vector3(0, 1, 0);
                 }
+
+                // Clear filled horizontal lines
+                MyGrid.deleteFullRows();
+
+                // Spawn next Group
+                FindObjectOfType<Spawner>().spawnNext();
+
+                // Disable script
+                enabled = false;
             }
         }
 
@@ -170,34 +165,28 @@ public class Group : MonoBehaviour {
 
                 foreach (Transform child in transform)
                 {
+                    child.position += new Vector3(0, -1, 0);
 
-                    while (MyGrid.insideBorder(child.position) && isValidGridPos()) {
+                    while (isValidGridPos())
+                    {
+                        // It's valid. Update grid.
+                        updateGrid();
+
                         child.position += new Vector3(0, -1, 0);
 
-                        if (isValidGridPos())
-                        {
-                            // It's valid. Update grid.
-                            updateGrid();
-                        }
                     }
 
-                    
-                    {
-                        // It's not valid. revert.
-                        child.position += new Vector3(0, 1, 0);
-
-                        // Clear filled horizontal lines
-                        MyGrid.deleteFullRows();
-
-                        // Spawn next Group
-                        FindObjectOfType<Spawner>().spawnNext();
-
-                        // Disable script
-                        enabled = false;
-                    }
-
-                 
+                    child.position += new Vector3(0, 1, 0);
                 }
+
+                // Clear filled horizontal lines
+                MyGrid.deleteFullRows();
+
+                // Spawn next Group
+                FindObjectOfType<Spawner>().spawnNext();
+
+                // Disable script
+                enabled = false;
             }
             lastFall = Time.time;
         }
